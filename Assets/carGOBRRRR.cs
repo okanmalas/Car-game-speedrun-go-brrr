@@ -8,7 +8,7 @@ public class carGOBRRRR : MonoBehaviour
     Rigidbody rb;
     [SerializeField] float sensivity = 31; 
     [SerializeField] float speed = 10;
-    bool isGrounded = false;
+    public bool isGrounded = false;
 
     private void Start()
     {
@@ -19,6 +19,14 @@ public class carGOBRRRR : MonoBehaviour
     {
         if (isGrounded)
             move();
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + transform.localScale.y * 2, transform.position.z);
+            transform.Rotate(180, 0, 0);
+        }
+
+        if (Time.timeScale == 0.5f && Input.GetKeyDown(KeyCode.K)) Time.timeScale = 1;
+        if (Time.timeScale == 1 && Input.GetKeyDown(KeyCode.K)) Time.timeScale = 0.5f;
     }
 
     void move()
@@ -31,17 +39,5 @@ public class carGOBRRRR : MonoBehaviour
         if (Input.GetAxis("Vertical") == 0 && locVel.z > .1f) locVel.z -= speed * Time.deltaTime;
         if (locVel.z < .01f && locVel.z > -.01f && Input.GetAxis("Vertical") != 0) locVel.z = 0;
         rb.velocity = transform.TransformDirection(locVel);
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "ground")
-            isGrounded = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "ground")
-            isGrounded = false;
     }
 }
